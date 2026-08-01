@@ -1,0 +1,19 @@
+# Build folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Rider
+.idea/
+
+# SQLite temporary files
+*.db-shm
+*.db-wal
+
+# OS files
+Thumbs.db
+.DS_Store

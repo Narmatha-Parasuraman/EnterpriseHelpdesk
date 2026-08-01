@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="EnterpriseHelpdesk.API/EnterpriseHelpdesk.API.csproj" />
+  <Project Path="EnterpriseHelpdesk.Application/EnterpriseHelpdesk.Application.csproj" />
+  <Project Path="EnterpriseHelpdesk.Domain/EnterpriseHelpdesk.Domain.csproj" />
+  <Project Path="EnterpriseHelpdesk.Infrastructure/EnterpriseHelpdesk.Infrastructure.csproj" />
+  <Project Path="EnterpriseHelpdesk.Tests/EnterpriseHelpdesk.Tests.csproj" />
+</Solution>
