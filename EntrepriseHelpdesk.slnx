@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/Solution Items/">
     <File Path=".gitignore.txt" />
+    <File Path="README.md" />
   </Folder>
   <Project Path="EnterpriseHelpdesk.API/EnterpriseHelpdesk.API.csproj" />
   <Project Path="EnterpriseHelpdesk.Application/EnterpriseHelpdesk.Application.csproj" />
