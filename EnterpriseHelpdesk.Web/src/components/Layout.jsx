@@ -1,9 +1,9 @@
 import { useState } from "react";
-import Home from "../pages/Home";
-import Dashboard from "../pages/Dashboard";
-import Departments from "../pages/Departments";
-import Employees from "../pages/Employee";
-import Tickets from "../pages/Tickets";
+import Home from "../Pages/Home";
+import Dashboard from "../Pages/Dashboard";
+import Departments from "../Pages/Departments";
+import Employees from "../Pages/Employee";
+import Tickets from "../Pages/Tickets";
 
 function Layout({ onLogout }) {
     const [page, setPage] = useState("dashboard");

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import api from "../services/api";
+import api from "../Services/api";
 
 function Tickets() {
     const [tickets, setTickets] = useState([]);

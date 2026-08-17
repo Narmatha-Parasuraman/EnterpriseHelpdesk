@@ -1,6 +1,6 @@
 import { useState } from "react";
 //import axios from "axios";
-import api from "../services/api";
+import api from "../Services/api";
 
 function Login({ onLogin }) {
     const [email, setEmail] = useState("");
