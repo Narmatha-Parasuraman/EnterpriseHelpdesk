@@ -1,5 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
+//import axios from "axios";
+import api from "../services/api";
 
 function Login({ onLogin }) {
     const [email, setEmail] = useState("");
@@ -9,9 +10,17 @@ function Login({ onLogin }) {
     const handleLogin = async (e) => {
         e.preventDefault();
 
+        // try {
+        //     const response = await axios.post(
+        //         "https://localhost:7096/api/Auth/login",
+        //         {
+        //             email: email,
+        //             password: password
+        //         }
+        //     );
         try {
-            const response = await axios.post(
-                "https://localhost:7096/api/Auth/login",
+            const response = await api.post(
+                "/Auth/login",
                 {
                     email: email,
                     password: password
