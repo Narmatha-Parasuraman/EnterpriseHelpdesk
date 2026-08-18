@@ -243,23 +243,11 @@ git commit -m "Update EnterpriseHelpdesk"
 git push origin main
 ```
 
-## ☁️ Future Deployment
+## ☁️ Live Demo:
+https://black-bay-0db015c00.7.azurestaticapps.net
 
-The application is designed for deployment to Microsoft Azure.
-
-Planned deployment architecture:
-
-```text
-React Frontend
-      ↓
-Azure Static Web Apps
-      ↓
-Azure App Service
-      ↓
-ASP.NET Core Web API
-      ↓
-Azure Database
-```
+## Github Repository
+EnterpriseHelpdesk repository
 
 ## 📌 Project Status
 
