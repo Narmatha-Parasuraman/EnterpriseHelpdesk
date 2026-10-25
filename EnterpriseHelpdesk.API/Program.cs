@@ -114,7 +114,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-//app.UseCors("ReactPolicy");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -158,20 +157,14 @@ using (var scope = app.Services.CreateScope())
             if (result.Succeeded)
                 await userManager.AddToRoleAsync(adminUser, "Admin");
         }
+        else
+        {
+            var token = await userManager.GeneratePasswordResetTokenAsync(adminUser);
+            await userManager.ResetPasswordAsync(adminUser, token, adminPassword);
+        }
     }
 }
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.MapOpenApi();
-app.UseSwagger();
-// app.UseSwaggerUI();
-//}
-
-//app.UseHttpsRedirection();
-
-//app.UseCors("ReactPolicy");
 if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
 if (!app.Environment.IsDevelopment())
 {
