@@ -70,6 +70,7 @@ public class EmployeesController : ControllerBase
 
     // DELETE: api/employees/{id}
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var deleted = await _employeeService.DeleteAsync(id);
