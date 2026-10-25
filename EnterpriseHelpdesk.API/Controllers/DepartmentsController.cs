@@ -78,6 +78,7 @@ public class DepartmentsController : ControllerBase
 
     // DELETE: api/departments/{id}
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete(int id)
     {
         var department = await _departmentService.GetByIdAsync(id);

@@ -12,6 +12,10 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var jwtKeyCheck = builder.Configuration["Jwt:Key"];
+if (string.IsNullOrWhiteSpace(jwtKeyCheck) || jwtKeyCheck.Length < 32 || jwtKeyCheck.StartsWith("SET-THIS"))
+    throw new InvalidOperationException("Jwt:Key is not configured. Set it with user-secrets or an environment variable.");
+
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
@@ -110,7 +114,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseCors("ReactPolicy");
 
 using (var scope = app.Services.CreateScope())
 {
@@ -133,42 +136,40 @@ using (var scope = app.Services.CreateScope())
     var userManager = scope.ServiceProvider
         .GetRequiredService<UserManager<ApplicationUser>>();
 
-    var adminEmail = "admin@helpdesk.com";
-    var adminPassword = "Admin@12345";
+    var adminEmail = builder.Configuration["Admin:Email"];
+    var adminPassword = builder.Configuration["Admin:Password"];
 
-    var adminUser = await userManager.FindByEmailAsync(adminEmail);
-
-    if (adminUser == null)
+    if (!string.IsNullOrWhiteSpace(adminEmail) &&
+        !string.IsNullOrWhiteSpace(adminPassword))
     {
-        adminUser = new ApplicationUser
-        {
-            UserName = adminEmail,
-            Email = adminEmail,
-            FullName = "System Administrator"
-        };
+        var adminUser = await userManager.FindByEmailAsync(adminEmail);
 
-        var result = await userManager.CreateAsync(
-            adminUser,
-            adminPassword);
-
-        if (result.Succeeded)
+        if (adminUser == null)
         {
-            await userManager.AddToRoleAsync(
-                adminUser,
-                "Admin");
+            adminUser = new ApplicationUser
+            {
+                UserName = adminEmail,
+                Email = adminEmail,
+                FullName = "System Administrator"
+            };
+
+            var result = await userManager.CreateAsync(adminUser, adminPassword);
+            if (result.Succeeded)
+                await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
+        else
+        {
+            var token = await userManager.GeneratePasswordResetTokenAsync(adminUser);
+            await userManager.ResetPasswordAsync(adminUser, token, adminPassword);
         }
     }
 }
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
-//}
-
-app.UseHttpsRedirection();
+if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseCors("ReactPolicy");
 
