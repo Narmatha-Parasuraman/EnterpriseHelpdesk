@@ -113,57 +113,51 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
-
-
-using (var scope = app.Services.CreateScope())
+app.Lifetime.ApplicationStarted.Register(() =>
 {
-    var roleManager = scope.ServiceProvider
-        .GetRequiredService<RoleManager<IdentityRole>>();
-
-    string[] roles = { "Admin", "Manager", "Employee" };
-
-    foreach (var role in roles)
+    _ = Task.Run(async () =>
     {
-        if (!await roleManager.RoleExistsAsync(role))
+        try
         {
-            await roleManager.CreateAsync(new IdentityRole(role));
-        }
-    }
-}
+            using var scope = app.Services.CreateScope();
 
-using (var scope = app.Services.CreateScope())
-{
-    var userManager = scope.ServiceProvider
-        .GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            foreach (var role in new[] { "Admin", "Manager", "Employee" })
+                if (!await roleManager.RoleExistsAsync(role))
+                    await roleManager.CreateAsync(new IdentityRole(role));
 
-    var adminEmail = builder.Configuration["Admin:Email"];
-    var adminPassword = builder.Configuration["Admin:Password"];
+            var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+            var adminEmail = app.Configuration["Admin:Email"];
+            var adminPassword = app.Configuration["Admin:Password"];
 
-    if (!string.IsNullOrWhiteSpace(adminEmail) &&
-        !string.IsNullOrWhiteSpace(adminPassword))
-    {
-        var adminUser = await userManager.FindByEmailAsync(adminEmail);
-
-        if (adminUser == null)
-        {
-            adminUser = new ApplicationUser
+            if (!string.IsNullOrWhiteSpace(adminEmail) && !string.IsNullOrWhiteSpace(adminPassword))
             {
-                UserName = adminEmail,
-                Email = adminEmail,
-                FullName = "System Administrator"
-            };
-
-            var result = await userManager.CreateAsync(adminUser, adminPassword);
-            if (result.Succeeded)
-                await userManager.AddToRoleAsync(adminUser, "Admin");
+                var adminUser = await userManager.FindByEmailAsync(adminEmail);
+                if (adminUser == null)
+                {
+                    adminUser = new ApplicationUser
+                    {
+                        UserName = adminEmail,
+                        Email = adminEmail,
+                        FullName = "System Administrator"
+                    };
+                    var result = await userManager.CreateAsync(adminUser, adminPassword);
+                    if (result.Succeeded)
+                        await userManager.AddToRoleAsync(adminUser, "Admin");
+                }
+                else // TEMPORARY: delete this else after the Admin login works
+                {
+                    var token = await userManager.GeneratePasswordResetTokenAsync(adminUser);
+                    await userManager.ResetPasswordAsync(adminUser, token, adminPassword);
+                }
+            }
         }
-        else
+        catch (Exception ex)
         {
-            var token = await userManager.GeneratePasswordResetTokenAsync(adminUser);
-            await userManager.ResetPasswordAsync(adminUser, token, adminPassword);
+            app.Logger.LogError(ex, "Startup seeding failed; the database may be waking up.");
         }
-    }
-}
+    });
+});
 
 if (app.Environment.IsDevelopment()) { app.UseSwagger(); app.UseSwaggerUI(); }
 if (!app.Environment.IsDevelopment())
@@ -175,7 +169,11 @@ app.UseCors("ReactPolicy");
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.MapGet("/api/health", async (ApplicationDbContext db) =>
+{
+    try { return await db.Database.CanConnectAsync() ? Results.Ok("ok") : Results.StatusCode(503); }
+    catch { return Results.StatusCode(503); }
+});
 app.MapControllers();
 
 app.Run();
