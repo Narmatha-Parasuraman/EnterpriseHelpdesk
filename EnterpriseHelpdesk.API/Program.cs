@@ -145,11 +145,11 @@ app.Lifetime.ApplicationStarted.Register(() =>
                     if (result.Succeeded)
                         await userManager.AddToRoleAsync(adminUser, "Admin");
                 }
-                else // TEMPORARY: delete this else after the Admin login works
-                {
-                    var token = await userManager.GeneratePasswordResetTokenAsync(adminUser);
-                    await userManager.ResetPasswordAsync(adminUser, token, adminPassword);
-                }
+                //else // TEMPORARY: delete this else after the Admin login works
+                //{
+                //    var token = await userManager.GeneratePasswordResetTokenAsync(adminUser);
+                //    await userManager.ResetPasswordAsync(adminUser, token, adminPassword);
+                //}
             }
         }
         catch (Exception ex)
