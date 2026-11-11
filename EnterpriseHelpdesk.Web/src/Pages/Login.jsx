@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import api from "../Services/api";
 
+const DEMO_EMAIL = "demo.employee@helpdesk.com";
+const DEMO_PASSWORD = "Helpdesk@12345";
+
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // Retry only when the server is down or waking up (5xx or no response).
@@ -22,6 +25,12 @@ function Login({ onLogin }) {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
     const [loading, setLoading] = useState(false);
+
+    const fillDemo = () => {
+        setEmail(DEMO_EMAIL);
+        setPassword(DEMO_PASSWORD);
+        setMessage("");
+    };
 
     // Wake the API and database while the visitor reads the page.
     useEffect(() => {
@@ -63,7 +72,6 @@ function Login({ onLogin }) {
             <h2>Enterprise Helpdesk</h2>
 
             <form onSubmit={handleLogin}>
-
                 <div style={{ marginBottom: "15px" }}>
                     <label>Email</label>
                     <input
@@ -93,8 +101,29 @@ function Login({ onLogin }) {
                 >
                     {loading ? "Please wait..." : "Login"}
                 </button>
-
             </form>
+
+            <div style={{
+                marginTop: "20px",
+                padding: "12px",
+                background: "#f5f7fa",
+                borderRadius: "8px",
+                fontSize: "14px"
+            }}>
+                <strong>Demo account (Employee)</strong>
+                <div>Email: {DEMO_EMAIL}</div>
+                <div>Password: {DEMO_PASSWORD}</div>
+                <button
+                    type="button"
+                    onClick={fillDemo}
+                    style={{ marginTop: "8px", width: "100%", padding: "8px" }}
+                >
+                    AutoFill demo login
+                </button>
+                <div style={{ marginTop: "8px", color: "#666" }}>
+                    The first sign-in can take up to a minute while the server wakes up.
+                </div>
+            </div>
 
             {message && <p>{message}</p>}
         </div>
