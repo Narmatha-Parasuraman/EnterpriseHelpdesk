@@ -543,13 +543,21 @@ const cancelButtonStyle = {
 };
 
 const successMessageStyle = {
-    padding: "10px",
-    borderRadius: "6px"
+    padding: "10px 12px",
+    borderRadius: "6px",
+    marginBottom: "16px",
+    fontSize: "14px",
+    color: "#166534",
+    backgroundColor: "#f0fdf4"
 };
 
 const errorMessageStyle = {
-    padding: "10px",
-    borderRadius: "6px"
+    padding: "10px 12px",
+    borderRadius: "6px",
+    marginBottom: "16px",
+    fontSize: "14px",
+    color: "#991b1b",
+    backgroundColor: "#fef2f2"
 };
 
 const tableContainerStyle = {

@@ -1,9 +1,15 @@
 import { useState } from "react";
-import Home from "../Pages/Home";
 import Dashboard from "../Pages/Dashboard";
 import Departments from "../Pages/Departments";
 import Employees from "../Pages/Employee";
 import Tickets from "../Pages/Tickets";
+
+const NAV_ITEMS = [
+    { key: "dashboard", label: "Dashboard" },
+    { key: "departments", label: "Departments" },
+    { key: "employees", label: "Employees" },
+    { key: "tickets", label: "Tickets" }
+];
 
 function Layout({ onLogout }) {
     const [page, setPage] = useState("dashboard");
@@ -21,131 +27,51 @@ function Layout({ onLogout }) {
 
             case "tickets":
                 return <Tickets />;
+
+            default:
+                return null;
         }
     };
 
     return (
-        <div
-            style={{
-                display: "flex",
-                minHeight: "100vh",
-                fontFamily: "Arial, sans-serif"
-            }}
-        >
-            {/* Sidebar */}
-            <aside
-                style={{
-                    width: "230px",
-                    backgroundColor: "#1f2937",
-                    color: "white",
-                    padding: "25px 15px",
-                    boxSizing: "border-box"
-                }}
-            >
-                <h2
-                    style={{
-                        marginBottom: "30px",
-                        textAlign: "center"
-                    }}
-                >
-                    Helpdesk
-                </h2>
+        <div className="app">
+            <aside className="sidebar">
+                <div className="brand">Helpdesk</div>
 
-                {/* Dashboard */}
+                <nav className="nav" aria-label="Main">
+                    {NAV_ITEMS.map((item) => (
+                        <button
+                            key={item.key}
+                            type="button"
+                            className={
+                                page === item.key
+                                    ? "nav-btn active"
+                                    : "nav-btn"
+                            }
+                            aria-current={
+                                page === item.key ? "page" : undefined
+                            }
+                            onClick={() => setPage(item.key)}
+                        >
+                            {item.label}
+                        </button>
+                    ))}
+                </nav>
+
                 <button
                     type="button"
-                    onClick={() => setPage("dashboard")}
-                    style={{
-                        width: "100%",
-                        padding: "12px",
-                        marginBottom: "10px",
-                        border: "none",
-                        borderRadius: "6px",
-                        cursor: "pointer"
-                    }}
-                >
-                    Dashboard
-                </button>
-
-                {/* Departments */}
-                <button
-                    type="button"
-                    onClick={() => setPage("departments")}
-                    style={{
-                        width: "100%",
-                        padding: "12px",
-                        marginBottom: "10px",
-                        border: "none",
-                        borderRadius: "6px",
-                        cursor: "pointer"
-                    }}
-                >
-                    Departments
-                </button>
-
-                {/* Employees */}
-                <button
-                    type="button"
-                    onClick={() => setPage("employees")}
-                    style={{
-                        width: "100%",
-                        padding: "12px",
-                        marginBottom: "10px",
-                        border: "none",
-                        borderRadius: "6px",
-                        cursor: "pointer"
-                    }}
-                >
-                    Employees
-                </button>
-
-                {/* Tickets */}
-                <button
-                    type="button"
-                    onClick={() => setPage("tickets")}
-                    style={{
-                        width: "100%",
-                        padding: "12px",
-                        marginBottom: "10px",
-                        border: "none",
-                        borderRadius: "6px",
-                        cursor: "pointer"
-                    }}
-                >
-                    Tickets
-                </button>
-
-                {/* Logout */}
-                <button
-                    type="button"
+                    className="nav-btn logout"
                     onClick={onLogout}
-                    style={{
-                        width: "100%",
-                        padding: "12px",
-                        marginTop: "30px",
-                        border: "none",
-                        borderRadius: "6px",
-                        cursor: "pointer"
-                    }}
                 >
                     Logout
                 </button>
             </aside>
 
-            {/* Main Content */}
-            <main
-                style={{
-                    flex: 1,
-                    padding: "30px",
-                    backgroundColor: "#f5f6fa",
-                    boxSizing: "border-box"
-                }}
-            >
-                {renderPage()}
+            <main className="content">
+                <div className="content-inner">{renderPage()}</div>
             </main>
         </div>
     );
 }
-
 
 export default Layout;

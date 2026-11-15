@@ -113,6 +113,13 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+if (app.Environment.IsDevelopment())
+{
+    using var dbScope = app.Services.CreateScope();
+    await dbScope.ServiceProvider
+        .GetRequiredService<ApplicationDbContext>()
+        .Database.EnsureCreatedAsync();
+}
 app.Lifetime.ApplicationStarted.Register(() =>
 {
     _ = Task.Run(async () =>
