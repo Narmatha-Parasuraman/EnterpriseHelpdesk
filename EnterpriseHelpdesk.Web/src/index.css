@@ -1,111 +1,366 @@
+/* ============================================================
+   Enterprise Helpdesk: shared styles
+   Replaces the default Vite template styles (which centred all
+   text and limited the app to a 1126px column).
+   ============================================================ */
+
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+    color-scheme: light;
+    --bg: #f5f6fa;
+    --surface: #ffffff;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --sidebar: #1f2937;
+    font: 15px/1.5 system-ui, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 body {
-  margin: 0;
+    margin: 0;
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
 }
 
+/* ---------- Typography ---------- */
+
 h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+h2,
+h3 {
+    font-family: inherit;
+    color: var(--text);
+    letter-spacing: normal;
+    text-align: left;
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+    margin: 0 0 4px;
+    font-size: 26px;
+    font-weight: 600;
 }
+
 h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
+    margin: 0 0 14px;
+    font-size: 17px;
+    font-weight: 600;
 }
+
+h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--muted);
+}
+
 p {
-  margin: 0;
+    margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+/* ---------- Buttons ---------- */
+
+button {
+    font: inherit;
+    font-weight: 500;
+    padding: 8px 14px;
+    color: var(--text);
+    background: #e5e7eb;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+    button:hover:not(:disabled) {
+        background: #d1d5db;
+    }
+
+    button[type="submit"] {
+        color: #ffffff;
+        background: var(--primary);
+    }
+
+        button[type="submit"]:hover:not(:disabled) {
+            background: var(--primary-dark);
+        }
+
+    button:focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+    }
+
+    button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+/* ---------- Forms: one width, one look for every field ---------- */
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+}
+
+input,
+select,
+textarea {
+    font: inherit;
+    color: var(--text);
+    background: #ffffff;
+}
+
+form input:not([type="checkbox"]):not([type="radio"]),
+form select,
+form textarea {
+    display: block;
+    width: 100% !important;
+    max-width: 460px !important;
+    margin-top: 6px !important;
+    padding: 9px 10px !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 6px !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
+    padding: 9px 10px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+}
+
+/* space between a page's subtitle and the first card */
+h1 + p {
+    margin-bottom: 20px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+    border-color: var(--primary);
+}
+
+/* message shown under the Tickets form */
+form + p {
+    margin-top: 14px;
+    padding: 10px 12px;
+    font-size: 14px;
+    color: #1e40af;
+    background: #eff6ff;
+    border-radius: 6px;
+}
+
+/* ---------- Tables ---------- */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+th {
+    color: #374151;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+td {
+    vertical-align: middle;
+}
+
+tbody tr:hover {
+    background: #fafafa;
+}
+
+/* Edit / Delete buttons in the last column */
+td:last-child {
+    white-space: nowrap;
+}
+
+td button {
+    font-size: 13px;
+    padding: 6px 12px;
+}
+
+    td button:first-child {
+        color: #1d4ed8;
+        background: #eff6ff;
+    }
+
+        td button:first-child:hover {
+            background: #dbeafe;
+        }
+
+    td button:last-child:not(:first-child) {
+        color: #b91c1c;
+        background: #fef2f2;
+    }
+
+        td button:last-child:not(:first-child):hover {
+            background: #fee2e2;
+        }
+
+/* ---------- App shell (sidebar + content) ---------- */
+
+.app {
+    flex: 1;
+    display: flex;
+}
+
+.sidebar {
+    position: sticky;
+    top: 0;
+    width: 240px;
+    height: 100svh;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 14px;
+    color: #f9fafb;
+    background: var(--sidebar);
+}
+
+.brand {
+    padding: 0 12px 24px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.nav {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-btn {
+    width: 100%;
+    padding: 10px 12px;
+    text-align: left;
+    color: #d1d5db;
+    background: transparent;
+    border: none;
+}
+
+    .nav-btn:hover:not(:disabled) {
+        color: #ffffff;
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-btn.active,
+    .nav-btn.active:hover:not(:disabled) {
+        color: #ffffff;
+        background: var(--primary);
+    }
+
+    .nav-btn:focus-visible {
+        outline-color: #ffffff;
+    }
+
+    .nav-btn.logout {
+        margin-top: 12px;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 0 0 6px 6px;
+        padding-top: 14px;
+    }
+
+.content {
+    flex: 1;
+    min-width: 0;
+    padding: 32px 36px;
+}
+
+.content-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ---------- Smaller screens ---------- */
+
+@media (max-width: 900px) {
+    /* Dashboard: 4 cards per row becomes 2 */
+    div[style*="repeat(4, 1fr)"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 800px) {
+    .app {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        padding: 12px;
+    }
+
+    .brand {
+        width: 100%;
+        padding: 0 4px;
+    }
+
+    .nav {
+        flex: 1 1 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .nav-btn {
+        width: auto;
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+        .nav-btn.logout {
+            margin-top: 0;
+            padding-top: 10px;
+            border-top: none;
+            border-radius: 6px;
+        }
+
+    .content {
+        padding: 20px 16px;
+    }
+
+    /* wide tables scroll sideways inside the page instead of stretching it */
+    table {
+        display: block;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+
+    /* search / filter rows wrap onto a second line */
+    .content-inner div[style*="display: flex"] {
+        flex-wrap: wrap;
+    }
+
+    input,
+    select,
+    textarea {
+        max-width: 100%;
+    }
 }

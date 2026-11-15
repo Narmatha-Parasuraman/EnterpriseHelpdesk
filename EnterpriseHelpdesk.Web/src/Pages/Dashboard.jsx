@@ -292,9 +292,10 @@ function Dashboard() {
 
                         <tbody>
 
-                            {tickets
-                                .slice(0, 5)
-                                .map(ticket => (
+                                {tickets
+                                    .sort((a, b) => b.id - a.id)
+                                    .slice(0, 5)
+                                    .map(ticket => (
 
                                     <tr key={ticket.id}>
 
